@@ -1,0 +1,16 @@
+pyproject.toml
+app/api/schemas/__init__.py
+app/api/v1/__init__.py
+app/api/v1/endpoints/__init__.py
+app/core/main.py
+app/domain/models/__init__.py
+app/domain/services/__init__.py
+app/infraestructure/database/config.py
+app/infraestructure/database/models.py
+app/infraestructure/external/__init__.py
+app/infraestructure/repositories/client_repository.py
+message_api.egg-info/PKG-INFO
+message_api.egg-info/SOURCES.txt
+message_api.egg-info/dependency_links.txt
+message_api.egg-info/requires.txt
+message_api.egg-info/top_level.txt
