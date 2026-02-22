@@ -2,8 +2,11 @@ __pycache__/
 *.py[cod]
 .venv/
 env/
+venv/
 .env
 .vscode/
 build/
 dist/
 *.egg-info/
+*.db
+*.sqlite3
