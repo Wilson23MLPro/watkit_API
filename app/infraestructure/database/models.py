@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import List
 import enum
 
+#create a class enum to immutable constants
 class OrderStatus(enum.Enum):
     ORDERING = "ordering"
     PENDING = "pending"
@@ -11,8 +12,11 @@ class OrderStatus(enum.Enum):
     COMPLETED = "completed"
     CANCELLED = "cancelled"
 
+#The standard way to define model classes mapped to database using ORM
+#SQLalchemy
 class Base(DeclarativeBase):
     pass
+
 
 class Client(Base):
     __tablename__ = "clients"
