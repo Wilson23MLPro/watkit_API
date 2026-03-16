@@ -11,6 +11,7 @@ class ClientRepository:
         query = select(Client).where(Client.wa_id == wa_id)
         result = await self.session.execute(query)
         return result.scalar_one_or_none()
+    
     async def create_client(self, wa_id: str, first_name:str | None = None,
                             last_name: str | None = None, email:str | None = None) -> Client:
         new_client= Client(wa_id=wa_id, first_name=first_name,

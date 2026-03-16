@@ -27,7 +27,7 @@ class OrderService:
                 quantity=quantity,
                 price=product.price
             )
-            await self.product_repo.decrease_stock(product.id, quantity)
+            await self.product_repo.decrease_stock_(product.id, quantity)
             return (
                  f'{quantity} x {product.name} added!\n\n '
                  'Want to add another product? Send the *ID*\n'
@@ -38,22 +38,32 @@ class OrderService:
               client_id=client_id,
               status=OrderStatus.ORDERING
          )
-# app/domain/services/order_service.py
-
-    async def checkout(self, client_id: int) -> str:
+#update order status
+    async def checkout(self, client_id: int):
+        """Transitions from ORDERING to PAID, calculates and saves total."""
         order = await self.order_repo.get_order_by_status(client_id, OrderStatus.ORDERING)
-        
-        if not order or not order.items:
-            return "You don't have an active order or your cart is empty."
-    
+        if not order:
+            return "No active cart found."
+        # Calculate total: sum of quantity * price_at_time for all items
         total = sum(item.quantity * item.price_at_time for item in order.items)
+        # Update order status and total atomically
+        await self.order_repo.update_order_status(order.id, OrderStatus.PAID, total=total)
+        return f"Order #{order.id} confirmed! Total to pay: ${total:.2f}"
+
+    async def cancel_order(self, client_id: int):
+    # Start a transaction block
+        async with self.session.begin(): 
+            order = await self.order_repo.get_order_by_status(client_id, OrderStatus.ORDERING)
         
-    
-        await self.order_repo.update_order_status(order.id, OrderStatus.PAID)
+        if not order:
+            return "Nothing to cancel."
+
+        # Use the ATOMIC version here
+        for item in order.items:
+            await self.product_repo.increase_atomic_stock(item.product_id, item.quantity)
+
+        # Update status
+        await self.order_repo.update_order_status(order.id, OrderStatus.CANCELLED)
         
-        return (
-            f"*Order Confirmed!*\n\n"
-            f"Order ID: #{order.id}\n"
-            f"Total to pay: ${total:.2f}\n\n"
-            "Thank you for your purchase! We are preparing your order."
-        )
+    # the stock increase is ROLLED BACK automatically.
+        return f"Order #{order.id} cancelled safely."

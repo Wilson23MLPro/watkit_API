@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import List
 from sqlalchemy import UniqueConstraint
 import enum 
+from sqlalchemy import Numeric
 
 #create a class enum to immutable constants
 class OrderStatus(enum.Enum):
@@ -79,6 +80,7 @@ class Order(Base):
     )
     client: Mapped["Client"] = relationship(back_populates="orders")
     items: Mapped[List["OrderItem"]] = relationship(back_populates="order")
+    total: Mapped[float] = mapped_column(Numeric(10, 2), default=0)
 
 class OrderItem(Base):
     __tablename__ = "order_items"

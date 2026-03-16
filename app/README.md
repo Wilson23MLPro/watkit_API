@@ -5,7 +5,7 @@ This API automates client management, providing automated follow-up triggers and
 *Framework:* FastAPI(High performance, easy to use).
 *ORM:* SQLAlchemy(SQL database managment).
 *Containerization:* Docker(Ensures consistent environment)
-*Language:*Python 3.9+
+*Language:*Python 3.13+
 
 **Project Architecture**
 The application follows a layered structure to ensure scalability and clean code:

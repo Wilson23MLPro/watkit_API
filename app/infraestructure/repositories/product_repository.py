@@ -35,23 +35,14 @@ class ProductRepository:
             await self.session.commit()
             return True
     
-    async def increase_stock(self, product_id: int, quantity: int) -> bool:
-        query = select(Product).where(Product.id == product_id)
-        result = await self.session.execute(query)
-        product = result.scalar_one_or_none()
-        
-        if not product:
-              return False
-        product.stock += quantity
-        self.session.add(product)
-        await self.session.commit()
-        return True
-    
+  
+    #use a direct SQL statement to increment the stock in the database
     async def increase_atomic_stock(self, product_id: int, quantity: int):
           query = (
                 update(Product)
                 .where(Product.id == product_id)
                 .values(stock=Product.stock + quantity)
+                .returning(Product)
 
           )
           await self.session.execute(query)

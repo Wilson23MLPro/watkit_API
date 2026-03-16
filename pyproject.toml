@@ -1,7 +1,7 @@
 [project]
-name = "message_api"
-version = "0.1.0"
-description = "API de mensajeria para gestion de clientes via whatsapp"
+name = "watkit_API"
+version = "0.2.0"
+description = "API to automate customer service and manage clients"
 authors = [
     {name = "Wilson23MLPro", email = "wilsoncarlosraul@gmail.com"}
 ]
@@ -15,7 +15,9 @@ dependencies = [
     "httpx>=0.26.0",
     "python-dotenv>=1.0.1",
     "alembic>=1.15.0",
-    "python-multipart>=0.0.22"
+    "python-multipart>=0.0.22",
+    "asyncpg>=0.31.0",
+    "psycopg2-binary>=2.9.11"
 ]
 [build-system]
 requires = ["setuptools>=61.0"]
