@@ -50,7 +50,7 @@ class OrderService:
         await self.order_repo.update_order_status(order.id, OrderStatus.PAID, total=total)
         return f"Order #{order.id} confirmed! Total to pay: ${total:.2f}"
 
-    async def cancel_order(self, client_id: int):
+    async def cancel_order(self, client_id: int) -> str:
     # Start a transaction block
         async with self.session.begin(): 
             order = await self.order_repo.get_order_by_status(client_id, OrderStatus.ORDERING)
